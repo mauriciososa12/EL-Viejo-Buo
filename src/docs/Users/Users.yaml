@@ -1,0 +1,137 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Todos los usuarios fueron devueltos satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/User"
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+  /api/users/register:
+    post:
+      summary: Registra un nuevo usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/newUser"
+      responses:
+        "200":
+          description: Se creo satisfactoriamente el usuario
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+  /api/users/current:
+    get:
+      summary: Obtiene el usuario logueado
+      tags:
+        - User
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+    delete:
+      summary: Elimina un usuario a partir del ID
+      tags:
+        - User
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se solicita
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Se elimino el usuario satisfactoriamente.
+        "500":
+          description: Error interno en el server. Query invalida o fallo la conexion con la DB.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado en mongo
+        first_name:
+          type: String
+          description: nombre del usuario
+        last_name:
+          type: String
+          description: apellido del usuario
+        email:
+          type: String
+          description: email del usuario
+        age:
+          type: Number
+          description: edad del usuario
+        password:
+          type: string
+          description: contrasena del usuario
+        cart:
+          type: ObjectId
+          description: ID auto generado de mongo
+        role:
+          type: String
+          description: typo del usuario
+        documents:
+          type: Array
+          description: Documentos subidos
+        last_connection:
+          type: Date
+          description: Ultima vez que el usuario ingreso
+      example:
+        first_name: Juan
+        last_name: Valencia
+        email: juan@mail.com
+        age: 33
+        password: dansldkj29d23n242dNJU
+        cart: DweCWie03i3N
+        role: "USER"
+        documents: []
+        last_connection: 15-05-2023
+  requestBodies:
+    newUser:
+      type: object
+      properties:
+        first_name:
+          type: String
+          description: nombre del usuario
+        last_name:
+          type: String
+          description: apellido del usuario
+        email:
+          type: String
+          description: email del usuario
+        age:
+          type: Number
+          description: edad del usuario
+        password:
+          type: string
+          description: contrasena del usuario
+      example:
+        _id: 63bf146e58e7baa835ee686f
+        first_name: Martina
+        last_name: Valencia
+        email: marti@mail.com
+        age: 22
+        password: dansldkj29d23n242dNJU
+tags: []
